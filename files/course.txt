@@ -1,6 +1,7 @@
 CENG1234;Data Structures and Algorithms;Mark Twain;2
 CENG2345;Programming Languages;Mark Lutz;7
-CENG6789;Machine Learning;John Wick;0
+CENG6789;Machine Learning;John Wick;1
+CENG2314;Programming Fundamentals;Matthew Lures;0
 CENG1780;Front-end Development;Chris Tery;5
-CENG9021;Back-end Development;Alex Mcloyd;3
-CENG4561;Mobile App Development;David Aloy;4
+CENG9021;Back-end Development;Alex Mcloyd;2
+CENG5561;Mobile App Development;David Aloy;4
