@@ -81,7 +81,7 @@ while flag:
         act = 2
 
         while act == 2:
-            code = (input("Enter course code: \n"))
+            code = (input("Enter course code: \n")).upper()
             exist = False
 
             with open("./files/course.txt", "r") as courses:
@@ -107,14 +107,14 @@ while flag:
         act = 2
 
         while act == 2:
-            name = (input("Search courses by name: "))
+            name = (input("Search courses by name: ")).lower()  # It is case-sensitive without .lower() functions
             exist = False
 
             with open("./files/course.txt", "r") as courses:
                 for line in courses:
                     newline = line.strip("\n")
                     items = newline.split(";")
-                    if name in items[1]:
+                    if name in items[1].lower():
                         print(items[0], ":  ", items[1])
                         exist = True
 
@@ -135,7 +135,7 @@ while flag:
         while act == 2:
             course_exist = False
             student_exist = False
-            code = input("Enter course code: ")
+            code = input("Enter course code: ").upper()
             st_id = input("Enter student id: ")
 
             # This increases course's student count by 1
@@ -147,7 +147,10 @@ while flag:
 
                     if elements[0] == code:  # Checks course code
                         newline.append(
-                            course_line.replace(elements[3], str(int(elements[3]) + 1)))  # Increases count
+                            course_line[::-1].replace(elements[3], str(int(elements[3]) + 1), 1)[::-1])  # Increases count
+                        # It is reversed two times because we only want to change the last occurrence of the number
+                        # Otherwise if number existed in course code, it would also increase.
+
                         course_exist = True
 
                     else:
