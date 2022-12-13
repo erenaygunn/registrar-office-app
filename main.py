@@ -61,14 +61,24 @@ while flag:
         act = 2  # Flag for loop
 
         while act == 2:
+            course_exist = False
             with open("./files/course.txt", "a") as f:
-                code = input("Enter course code: ")
-                name = input("Enter course's name: ")
-                instructor = input("Enter instructor's name: ")
-                students = int(input("Enter students' count: "))
-                f.write("\n")
-                f.write(f"{code};{name};{instructor};{students}")
-                print("Course successfully added. \n")
+                code = input("Enter course code: ").upper()
+                with open("./files/course.txt", "r") as course:
+                    for line in course:
+                        newline = line.strip("\n")
+                        items = newline.split(";")
+                        if items[0] == code:            # Firstly, checks if course already exists
+                            print("Course already exists!")
+                            course_exist = True
+                            break
+                if not course_exist:                        # If course doesn't exist, progress continues.
+                    name = input("Enter course's name: ")
+                    instructor = input("Enter instructor's name: ")
+                    students = int(input("Enter students' count: "))
+                    f.write("\n")
+                    f.write(f"{code};{name};{instructor};{students}")
+                    print("Course successfully added. \n")
 
             act = int(input("0:Go back. \n"
                             "1:Exit. \n"
