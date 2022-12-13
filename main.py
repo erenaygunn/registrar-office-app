@@ -138,57 +138,80 @@ while flag:
             code = input("Enter course code: ").upper()
             st_id = input("Enter student id: ")
 
-            # This increases course's student count by 1
-            with open("./files/course.txt", "r") as f:
-                newline = []  # This will store modified text file
-                for course_line in f.readlines():
-                    new_course = course_line.strip("\n")
-                    elements = new_course.split(";")
+            with open("./files/student.txt", "r") as students:     # Checks if student is already registered
+                for line in students:
+                    newline = line.strip("\n")
+                    items = newline.split(";")
+                    if items[0] == st_id:
+                        course_codes = items[2].split(",")
+                        if code in course_codes:
+                            print("Student is already registered to that course.\n")
+                            break
+                        else:
+                            if len(course_codes) <= 1:
+                                nocourse = True
+                            else:
+                                nocourse = False
 
-                    if elements[0] == code:  # Checks course code
-                        newline.append(
-                            course_line[::-1].replace(elements[3], str(int(elements[3]) + 1), 1)[::-1])  # Increases count
-                        # It is reversed two times because we only want to change the last occurrence of the number
-                        # Otherwise if number existed in course code, it would also increase.
+                            # This increases course's student count by 1
+                            with open("./files/course.txt", "r") as f:
+                                newline = []  # This will store modified text file
+                                for course_line in f.readlines():
+                                    new_course = course_line.strip("\n")
+                                    elements = new_course.split(";")
 
-                        course_exist = True
+                                    if elements[0] == code:  # Checks course code
+                                        newline.append(
+                                            course_line[::-1].replace(elements[3], str(int(elements[3]) + 1), 1)[
+                                            ::-1])  # Increases count
+                            # It is reversed two times because we only want to change the last occurrence of the number
+                            # Otherwise if number existed in course code, it would also increase.
 
-                    else:
-                        newline.append(course_line)
+                                        course_exist = True
 
-            with open("./files/course.txt", "w") as f:
-                for line in newline:  # Writes entire modified text in file
-                    f.writelines(line)
+                                    else:
+                                        newline.append(course_line)
 
-            # This adds course code at the end of the student's information.
-            with open("./files/student.txt", "r") as f:
-                newline = []
-                for student in f.readlines():
-                    new_student = student.strip("\n")
-                    elements = new_student.split(";")
+                            with open("./files/course.txt", "w") as f:
+                                for line in newline:  # Writes entire modified text in file
+                                    f.writelines(line)
 
-                    if elements[0] == st_id:  # Checks student id.
-                        newline.append(student.strip("\n") + "," + code + "\n")  # If it is same, adds course
-                        student_exist = True
+                            # This adds course code at the end of the student's information.
+                            with open("./files/student.txt", "r") as f:
+                                newline = []
+                                for student in f.readlines():
+                                    new_student = student.strip("\n")
+                                    elements = new_student.split(";")
 
-                    else:
-                        newline.append(student)
+                                    if elements[0] == st_id:  # Checks student id.
 
-            with open("./files/student.txt", "w") as f:
-                for line in newline:  # Writes entire modified text again
-                    f.writelines(line)
+                                        # If there were no courses before, we don't want comma to be added
+                                        # So there is this if statement
+                                        if nocourse:
+                                            newline.append(student.strip("\n") + code + "\n")
+                                            student_exist = True
+                                        else:
+                                            newline.append(
+                                                student.strip("\n") + "," + code + "\n")
+                                            student_exist = True
+                                    else:
+                                        newline.append(student)
 
-            if student_exist and not course_exist:
-                print("Course doesn't exist!\n")
+                            with open("./files/student.txt", "w") as f:
+                                for line in newline:  # Writes entire modified text again
+                                    f.writelines(line)
 
-            elif not student_exist and course_exist:
-                print("Student doesn't exist!\n")
+                            if student_exist and not course_exist:
+                                print("Course doesn't exist!\n")
 
-            elif student_exist and course_exist:
-                print("Student successfully registered.\n")
+                            elif not student_exist and course_exist:
+                                print("Student doesn't exist!\n")
 
-            else:
-                print("Course and student not found. Try again.\n")
+                            elif student_exist and course_exist:
+                                print("Student successfully registered.\n")
+
+                            else:
+                                print("Course and student not found. Try again.\n")
 
             act = int(input("0:Go back. \n"
                             "1:Exit. \n"
