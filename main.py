@@ -145,6 +145,7 @@ while flag:
         while act == 2:
             course_exist = False
             student_exist = False
+            student_registered = False
             code = input("Enter course code: ").upper()
             st_id = input("Enter student id: ")
 
@@ -153,12 +154,13 @@ while flag:
                     newline = line.strip("\n")
                     items = newline.split(";")
                     if items[0] == st_id:
-                        course_codes = items[2].split(",")
+                        course_codes = items[2].split(",")    # Makes a list of course codes
                         if code in course_codes:
                             print("Student is already registered to that course.\n")
+                            student_registered = True
                             break
                         else:
-                            if len(course_codes) <= 1:
+                            if len(course_codes) <= 1:   # This determines if student hasn't got any courses registered
                                 nocourse = True
                             else:
                                 nocourse = False
@@ -172,10 +174,15 @@ while flag:
 
                                     if elements[0] == code:  # Checks course code
                                         newline.append(
-                                            course_line[::-1].replace(elements[3], str(int(elements[3]) + 1), 1)[
+                                            course_line[::-1].replace("".join(reversed(elements[3])),
+                                                                      "".join(reversed(str(int(elements[3]) + 1))), 1)[
                                             ::-1])  # Increases count
                             # It is reversed two times because we only want to change the last occurrence of the number
                             # Otherwise if number existed in course code, it would also increase.
+
+                            # I also reversed the numbers(parameters of replace) because if student count was 2 digit,
+                                        # when it gets reversed,
+                                        # you cant replace it with by entering its old version to the replace function
 
                                         course_exist = True
 
@@ -210,18 +217,18 @@ while flag:
                             with open("./files/student.txt", "w") as f:
                                 for line in newline:  # Writes entire modified text again
                                     f.writelines(line)
+            if not student_registered:
+                if student_exist and not course_exist:
+                    print("Course doesn't exist!\n")
 
-                            if student_exist and not course_exist:
-                                print("Course doesn't exist!\n")
+                elif not student_exist and course_exist:
+                    print("Student doesn't exist!\n")
 
-                            elif not student_exist and course_exist:
-                                print("Student doesn't exist!\n")
+                elif student_exist and course_exist:
+                    print("Student successfully registered.\n")
 
-                            elif student_exist and course_exist:
-                                print("Student successfully registered.\n")
-
-                            else:
-                                print("Course and student not found. Try again.\n")
+                else:
+                    print("Course and student not found. Try again.\n")
 
             act = int(input("0:Go back. \n"
                             "1:Exit. \n"
