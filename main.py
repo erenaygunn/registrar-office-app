@@ -162,7 +162,7 @@ while flag:
                         else:
                             if len(course_codes) <= 1:   # This determines if student hasn't got any courses registered
                                 nocourse = True
-                            else:
+                            else:                          # So that we can decide to put comma before the course code
                                 nocourse = False
 
                             # This increases course's student count by 1
