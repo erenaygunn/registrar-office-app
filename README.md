@@ -29,7 +29,7 @@ separated by semicolon(;) in this file.
   4. Search a course by course code.
   5. Search a course by name.
   6. Register a student to a course.
-  7. List all the students their registered courses.
+  7. List all the students and their registered courses.
   8. List top 3 most crowded courses.
   9. List top 3 students with the most course registrations.
   
